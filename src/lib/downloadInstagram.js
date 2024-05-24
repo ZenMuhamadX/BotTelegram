@@ -56,9 +56,9 @@ const main = async (ctx) => {
             null,
             "Download Berhasil 🟢"
          );
-         fs.unlinkSync(`./video/reels${idVideo}.mp4`);
-         await page.close();
+         fs.unlinkSync(`./video/reels${idVideo}.mp4`)
       });
+      await page.close()
    } catch (error) {
       console.error(error);
       ctx.telegram.editMessageText(
