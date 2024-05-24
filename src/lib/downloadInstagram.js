@@ -37,7 +37,7 @@ const main = async (ctx) => {
          throw new Error("Video tidak ditemukan pada halaman.");
       }
       const downloadVieo = fs.createWriteStream(
-         `./src/video/reels${idVideo}.mp4`
+         `./video/reels${idVideo}.mp4`
       );
       const resVideo = await axios({
          url: videoUrl,
@@ -48,7 +48,7 @@ const main = async (ctx) => {
       await downloadVieo.on("finish", async () => {
          await browser.close();
          await ctx.replyWithVideo({
-            source: `./src/video/reels${idVideo}.mp4`,
+            source: `./video/reels${idVideo}.mp4`,
          });
          await ctx.telegram.editMessageText(
             ctx.chat.id,
