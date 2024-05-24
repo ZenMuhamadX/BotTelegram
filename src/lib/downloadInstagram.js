@@ -56,7 +56,7 @@ const main = async (ctx) => {
             null,
             "Download Berhasil 🟢"
          );
-         fs.unlinkSync(`./src/video/reels${idVideo}.mp4`);
+         fs.unlinkSync(`./video/reels${idVideo}.mp4`);
          await page.close();
       });
    } catch (error) {
