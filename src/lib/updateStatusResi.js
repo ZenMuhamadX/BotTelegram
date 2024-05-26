@@ -29,7 +29,7 @@ const updateStatusResi = async (ctx) => {
    const idToUpdate = message[1];
    const newUpdate = message.slice(2).join(" ");
    try {
-      const loading = await ctx.reply("Mencari...");
+      const loading = await ctx.reply("Mencari... 🔵");
       const [idResi, values] = await getResi(spreadsheetId, [
          "Data Order!G:G",
          "Data Order!H:H",
@@ -59,7 +59,7 @@ const updateStatusResi = async (ctx) => {
          ctx.chat.id,
          loading.message_id,
          null,
-         `Status Pengiriman ${idToUpdate} diperbarui`
+         `Status Pengiriman ${idToUpdate} diperbarui 🟢`
       );
    } catch (error) {
       console.error("error", error);

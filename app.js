@@ -8,50 +8,58 @@ const qr = require("./src/lib/qr");
 const hashHigh = require("./src/lib/hashHigh");
 const update = require("./src/lib/updateStatusResi");
 const download = require("./src/lib/downloadInstagram");
+const pairCurrency = require("./src/lib/pairCurrency");
 const token = process.env.KEYBOT;
 const bot = new Telegraf(token);
 
-// let messages = [];
-// // Handler untuk semua jenis pesan
-// bot.on("message", (ctx, next) => {
-//    // Simpan ID pesan yang diterima
-//    messages.push({ chatId: ctx.chat.id, messageId: ctx.message.message_id });
-//    next();
-// });
+let userMessage = {};
 
-// // Handler untuk perintah /clear
-// bot.command("clear", async (ctx) => {
-//    const chatId = ctx.chat.id;
+bot.use((ctx, next) => {
+   if (ctx.message && ctx.message.from) {
+      const userId = ctx.from.id;
+      const username = ctx.message.from.username;
+      const text = ctx.message.text;
+      if (!userMessage[userId]) {
+         userMessage[userId] = [];
+      }
+      userMessage[userId].push(ctx.message.message_id);
+   }
+   return next();
+});
 
-//    // Hapus semua pesan yang disimpan di array
-//    for (const { chatId, messageId } of messages) {
-//       try {
-//          await ctx.telegram.deleteMessage(chatId, messageId);
-//       } catch (err) {
-//          console.log(
-//             `Gagal menghapus pesan ${messageId} di chat ${chatId}:`,
-//             err
-//          );
-//       }
-//    }
+bot.command("clear", async (ctx) => {
+   const userId = ctx.message.from.id;
+   if (userMessage[userId]) {
+      for (const messageId of userMessage[userId]) {
+         try {
+            await ctx.telegram.deleteMessage(ctx.chat.id, messageId);
+         } catch (error) {
+            console.log(error);
+         }
+      }
+      userMessage[userId] = [];
+   } else {
+      ctx.reply("you have no message");
+   }
+});
+const start = `
+ <b>Selamat datang di bot multifungsi\n</b>
+ /c untuk melihat market crypto\n
+ /infogempa untuk info gempa\n 
+ /cuaca untuk mengecek cuaca\n 
+ /donate untuk donasi\n
+ /qr untuk membuat qr code\n
+ /convert untuk konversi mata uang\n
+ /hashigh untuk mengecek nonce hash dengan difculty 0000\n
+ /clear untuk menghapus pesan anda\n`
 
-//    // Bersihkan array setelah penghapusan
-//    messages.length = 0;
+bot.start(async (ctx) => {
+   await ctx.replyWithHTML(start);
+});
 
-//    // Kirim pesan konfirmasi dan hapus pesan konfirmasi itu sendiri setelah beberapa detik
-//    ctx.reply("Semua pesan telah dihapus.").then((sentMessage) => {
-//       setTimeout(() => {
-//          ctx.telegram
-//             .deleteMessage(sentMessage.chat.id, sentMessage.message_id)
-//             .catch((err) => {
-//                console.log("Gagal menghapus pesan konfirmasi:", err);
-//             });
-//       }, 5000); // 5 detik
-//    });
-// });
-const start =
-   "Selamat datang di bot multifungsi\n /c untuk melihat market crypto\n /infogempa untuk info gempa\n /cuaca untuk mengecek cuaca\n /donate untuk donasi";
-bot.start((ctx) => ctx.reply(start));
+bot.command("convert", async (ctx) => {
+   await pairCurrency(ctx);
+});
 
 bot.command("update", async (ctx) => {
    const getIdAdmin = ctx.message.from.id;
@@ -59,8 +67,22 @@ bot.command("update", async (ctx) => {
    if (getIdAdmin == IdAdmin) {
       await update(ctx);
    } else {
-      return await ctx.reply("Maaf Anda bukan admin...");
+      await ctx.reply("Maaf Anda bukan admin...");
+      return;
    }
+});
+
+bot.command("hashigh", async (ctx) => {
+   const admin = ctx.message.chat.id;
+   if (admin === 6950915910) {
+      await hashHigh(ctx);
+   } else {
+      await ctx.reply("Maaf Anda bukan admin...");
+   }
+});
+
+bot.command("save", (ctx) => {
+   ctx.reply("pesan disimpan");
 });
 
 bot.command("download", async (ctx) => {
@@ -89,15 +111,6 @@ bot.command("cuaca", async (ctx) => {
 
 bot.command("donate", async (ctx) => {
    await usdt(ctx);
-});
-
-bot.command("hashigh", async (ctx) => {
-   const admin = ctx.message.chat.id;
-   if (admin === 6950915910) {
-      await hashHigh(ctx);
-   } else {
-      await ctx.reply("Maaf Anda bukan admin...");
-   }
 });
 
 bot.launch();
