@@ -9,6 +9,11 @@ const hashHigh = require("./src/lib/hashHigh");
 const update = require("./src/lib/updateStatusResi");
 const download = require("./src/lib/downloadInstagram");
 const pairCurrency = require("./src/lib/pairCurrency");
+const get = require("./src/lib/readDatabase");
+const express = require("express");
+const app = express();
+app.use(express.json());
+
 const token = process.env.KEYBOT;
 const bot = new Telegraf(token);
 
@@ -17,8 +22,6 @@ let userMessage = {};
 bot.use((ctx, next) => {
    if (ctx.message && ctx.message.from) {
       const userId = ctx.from.id;
-      const username = ctx.message.from.username;
-      const text = ctx.message.text;
       if (!userMessage[userId]) {
          userMessage[userId] = [];
       }
@@ -51,7 +54,7 @@ const start = `
  /qr untuk membuat qr code\n
  /convert untuk konversi mata uang\n
  /hashigh untuk mengecek nonce hash dengan difculty 0000\n
- /clear untuk menghapus pesan anda\n`
+ /clear untuk menghapus pesan anda\n`;
 
 bot.start(async (ctx) => {
    await ctx.replyWithHTML(start);
@@ -93,6 +96,11 @@ bot.command("infogempa", async (ctx) => {
    await gempa(ctx);
 });
 
+// fase evelopment !!!!
+bot.command("get", async (ctx) => {
+   await get(ctx);
+});
+
 bot.command("c", async (ctx) => {
    await crypto(ctx);
 });
@@ -113,4 +121,13 @@ bot.command("donate", async (ctx) => {
    await usdt(ctx);
 });
 
-bot.launch();
+// WEBHOOK
+app.post("/webhook", (req, res) => {
+   bot.handleUpdate(req.body, res);
+});
+
+bot.telegram.setWebhook("https://steadily-real-dog.ngrok-free.app/webhook");
+
+app.listen(5000, () => {
+   console.log(`webhook SET`);
+});
