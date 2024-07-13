@@ -1,0 +1,22 @@
+{
+  "version": 2,
+  "builds": [
+    {
+      "src": "app.js",
+      "use": "@vercel/node"
+    }
+  ],
+  "routes": [
+    {
+      "src": "/webhook",
+      "methods": ["POST"],
+      "dest": "app.js"
+    },
+    {
+      "src": "/",
+      "methods": ["GET"],
+      "dest": "app.js"
+    }
+    // Tambahkan lebih banyak route sesuai kebutuhan
+  ]
+}
