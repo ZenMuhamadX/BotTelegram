@@ -118,7 +118,7 @@ bot.command("donate", async (ctx) => {
    await usdt(ctx);
 });
 const webHook = () => {
-   bot.telegram.setWebhook("https://steadily-real-dog.ngrok-free.app/webhook");
+   bot.telegram.setWebhook("https://webhook.zenxyz.online/webhook");
    console.log("webHook Succes");
 };
 webHook();
