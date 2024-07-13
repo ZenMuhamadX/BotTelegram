@@ -117,10 +117,6 @@ bot.command("cuaca", async (ctx) => {
 bot.command("donate", async (ctx) => {
    await usdt(ctx);
 });
-const webHook = () => {
-   bot.telegram.setWebhook("https://webhook.zenxyz.online/webhook");
-   console.log("webHook Succes");
-};
-webHook();
+
 
 module.exports = bot;
