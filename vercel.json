@@ -17,6 +17,5 @@
       "methods": ["GET"],
       "dest": "app.js"
     }
-    // Tambahkan lebih banyak route sesuai kebutuhan
   ]
 }
