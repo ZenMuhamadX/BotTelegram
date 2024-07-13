@@ -6,7 +6,6 @@ app.use(express.json());
 // WEBHOOK
 app.post("/webhook", (req, res) => {
    bot.handleUpdate(req.body, res);
-   res.sendStatus(200)
 });
 
 app.get("/",(req,res)=>{
