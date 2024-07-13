@@ -19,5 +19,4 @@ bot.telegram.setWebhook("https://webhook.zenxyz.online/webhook");
 
 app.listen(5000, () => {
    console.log(`webhook SET`);
-   console.log("webHook Succes");
 });
