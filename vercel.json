@@ -8,13 +8,7 @@
   ],
   "routes": [
     {
-      "src": "/hook",
-      "methods": ["POST"],
-      "dest": "app.js"
-    },
-    {
-      "src": "/",
-      "methods": ["GET"],
+      "src": "/(.*)",
       "dest": "app.js"
     }
   ]
