@@ -11,7 +11,7 @@ const download = require("./src/lib/downloadInstagram");
 const pairCurrency = require("./src/lib/pairCurrency");
 const get = require("./src/lib/readDatabase");
 
-const token = process.env.KEYBOT;
+const token = '6362621052:AAE1OUSAukE5FZk53DarCLdzD9o8Rb1hx_o'||process.env.KEYBOT;
 const bot = new Telegraf(token);
 
 let userMessage = {};
