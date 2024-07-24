@@ -3,7 +3,7 @@ const app = express();
 const bot = require("./command");
 
 const setWebHook = () =>{
-bot.telegram.setWebhook("https://webhook.zenxyz.online/webhook");
+bot.telegram.setWebhook("https://webhook.zenxyz.online/hook");
 }
 
 app.use(express.json());
