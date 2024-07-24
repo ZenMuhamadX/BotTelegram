@@ -8,7 +8,7 @@ bot.telegram.setWebhook("https://webhook.zenxyz.online/webhook");
 
 app.use(express.json());
 // WEBHOOK
-app.post("/webhook", (req, res) => {
+app.post("/hook", (req, res) => {
    bot.handleUpdate(req.body, res);
 });
 
@@ -16,7 +16,6 @@ app.get("/",(req,res)=>{
    setWebHook()
    res.status(200).json({
       OK:true,
-      status:200,
       message:"Webhook Set",
    })
 })
