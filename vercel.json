@@ -8,7 +8,7 @@
   ],
   "routes": [
     {
-      "src": "/webhook",
+      "src": "/hook",
       "methods": ["POST"],
       "dest": "app.js"
     },
